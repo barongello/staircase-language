@@ -1,0 +1,28 @@
+{
+  "name": "staircase-language",
+  "version": "1.0.0",
+  "description": "StairCase Language",
+  "main": "index.js",
+  "homepage": "https://github.com/barongello/staircase-language",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barongello/staircase-language.git"
+  },
+  "scripts": {
+    "build": "rm -rf build && npx tsc"
+  },
+  "keywords": [
+    "StairCase",
+    "Language"
+  ],
+  "author": "Wagner Barongello <wagner@barongello.com.br>",
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.0.0",
+    "@types/prompt-sync": "^4.1.1",
+    "typescript": "^4.3.5"
+  }
+}

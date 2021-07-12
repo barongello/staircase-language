@@ -1,0 +1,15 @@
+'use strict';
+
+export enum StairCaseOperation {
+  BITWISE_AND,
+  BITWISE_OR,
+  BITWISE_SHIFT_LEFT,
+  BITWISE_SHIFT_RIGHT,
+  BITWISE_XOR,
+  DIVIDE,
+  MODULO,
+  MULTIPLY,
+  NOT,
+  SUBTRACT,
+  SUM
+};
