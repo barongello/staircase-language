@@ -114,10 +114,16 @@ _StairCaseInterpreter_cells = new WeakMap(), _StairCaseInterpreter_cellIndex = n
 }, _StairCaseInterpreter_parseNumberArgument = function _StairCaseInterpreter_parseNumberArgument(reference) {
     const text = __classPrivateFieldGet(this, _StairCaseInterpreter_instances, "m", _StairCaseInterpreter_parseTextArgument).call(this, true);
     if (reference === true) {
-        if (/^@[0-9]+$/.test(text) === true) {
-            const indexText = text.substr(1);
+        if (/^-?@[0-9]+$/.test(text) === true) {
+            let indexTextStart = 1;
+            let multiplier = 1;
+            if (text[0] === '-') {
+                indexTextStart = 2;
+                multiplier = -1;
+            }
+            const indexText = text.substr(indexTextStart);
             const index = parseInt(indexText);
-            return __classPrivateFieldGet(this, _StairCaseInterpreter_instances, "m", _StairCaseInterpreter_getCell).call(this, index);
+            return __classPrivateFieldGet(this, _StairCaseInterpreter_instances, "m", _StairCaseInterpreter_getCell).call(this, index) * multiplier;
         }
     }
     if (/^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$/.test(text) === false) {

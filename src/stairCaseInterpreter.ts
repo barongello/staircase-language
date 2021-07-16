@@ -126,11 +126,19 @@ export default class StairCaseInterpreter {
     const text: string = this.#parseTextArgument(true);
 
     if(reference === true) {
-      if(/^@[0-9]+$/.test(text) === true) {
-        const indexText: string = text.substr(1);
+      if(/^-?@[0-9]+$/.test(text) === true) {
+        let indexTextStart: number = 1;
+        let multiplier: number = 1;
+
+        if(text[0] === '-') {
+          indexTextStart = 2;
+          multiplier = -1;
+        }
+
+        const indexText: string = text.substr(indexTextStart);
         const index: number = parseInt(indexText);
 
-        return this.#getCell(index)
+        return this.#getCell(index) * multiplier;
       }
     }
 
