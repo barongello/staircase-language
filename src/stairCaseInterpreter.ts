@@ -96,12 +96,31 @@ export default class StairCaseInterpreter {
 
     let lineNumber: number = -1;
 
-    if(/^@[0-9]+$/.test(text) === true) {
-      const indexText: string = text.substr(1);
-      const index: number = parseInt(indexText);
+    if(/^[+-]?@[0-9]+$/.test(text) === true) {
+      let relative: boolean = false;
+      let indexTextStart: number = 1;
+      let multiplier: number = 1;
 
-      // Minus one because programs counts from 0
-      lineNumber = Math.trunc(this.#getCell(index)) - 1;
+      if(text[0] !== '@') {
+        relative = true;
+        indexTextStart = 2;
+      }
+
+      if(text[0] === '-') {
+        multiplier = -1;
+      }
+
+      const indexText: string = text.substr(indexTextStart);
+      const index: number = parseInt(indexText);
+      const value: number = Math.trunc(this.#getCell(index)) * multiplier;
+
+      if(relative === true) {
+        lineNumber = this.#lineIndex + value;
+      }
+      else {
+        // Minus one because programs counts from 0
+        lineNumber = value - 1;
+      }
     }
     else if(/^[+-][0-9]+$/.test(text) === true) {
       const difference: number = parseInt(text);

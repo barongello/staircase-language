@@ -92,11 +92,27 @@ _StairCaseInterpreter_cells = new WeakMap(), _StairCaseInterpreter_cellIndex = n
         __classPrivateFieldGet(this, _StairCaseInterpreter_instances, "m", _StairCaseInterpreter_throw).call(this, 'This command needs a line number');
     }
     let lineNumber = -1;
-    if (/^@[0-9]+$/.test(text) === true) {
-        const indexText = text.substr(1);
+    if (/^[+-]?@[0-9]+$/.test(text) === true) {
+        let relative = false;
+        let indexTextStart = 1;
+        let multiplier = 1;
+        if (text[0] !== '@') {
+            relative = true;
+            indexTextStart = 2;
+        }
+        if (text[0] === '-') {
+            multiplier = -1;
+        }
+        const indexText = text.substr(indexTextStart);
         const index = parseInt(indexText);
-        // Minus one because programs counts from 0
-        lineNumber = Math.trunc(__classPrivateFieldGet(this, _StairCaseInterpreter_instances, "m", _StairCaseInterpreter_getCell).call(this, index)) - 1;
+        const value = Math.trunc(__classPrivateFieldGet(this, _StairCaseInterpreter_instances, "m", _StairCaseInterpreter_getCell).call(this, index)) * multiplier;
+        if (relative === true) {
+            lineNumber = __classPrivateFieldGet(this, _StairCaseInterpreter_lineIndex, "f") + value;
+        }
+        else {
+            // Minus one because programs counts from 0
+            lineNumber = value - 1;
+        }
     }
     else if (/^[+-][0-9]+$/.test(text) === true) {
         const difference = parseInt(text);
