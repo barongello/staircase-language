@@ -2,7 +2,7 @@
 
 Esoteric programming language created recreationally to just add one more weird language to [Esolangs](https://esolangs.org) and learn a little bit about creating NPM packages and publishing them
 
-While it probably has no useful usage, it is fun to code in and somehow train your brain to code in unusual ways (pretty much like Brainf*ck)
+While it probably has no useful usage, it is fun to code in and somehow train your brain to code in unusual ways (pretty much like [Brainf*ck](https://esolangs.org/wiki/Brainfuck))
 
 The language was built on top of JavaScript, so some JavaScript traits are built in (like: 5 % -2 = 1 instead of -1)
 
@@ -17,7 +17,7 @@ It is not based in a stack concept, but in cells instead. Cells are like numeric
 
 ## Commands
 
-### Comments - ;
+### Comments - `;`
 
 Everything after a `;` is a comment, unless in the String Literal command, where `;`will be handled as part of the text
 
@@ -26,8 +26,9 @@ Everything after a `;` is a comment, unless in the String Literal command, where
 `5     ; I am a comment too
 ```
 
-### Numeric Literals - `
+### Literals
 
+#### Numbers - `` ` ``
 Put a number into a cell
 
 ```
@@ -35,7 +36,7 @@ Put a number into a cell
  `3    ; Make the cell 1 hold the value 3
 ```
 
-### String Literals - \
+#### Strings - `\`
 
 Put the byte of each character of a string into the cells, plus an additional cell that will hold the 0 value
 
@@ -50,7 +51,7 @@ Put the byte of each character of a string into the cells, plus an additional ce
 ; Cell 5: 0
 ```
 
-### Copy Cell - @
+### Copy Cell - `@`
 
 Copy the content of a cell
 
@@ -59,7 +60,9 @@ Copy the content of a cell
  @0    ; Make the cell 1 be the value of cell 0
 ```
 
-### Print Number With EOL - "
+### Print
+
+#### Number With EOL - `"`
 
 Print the cell value as a number and add the OS' EOL character(s)
 
@@ -68,7 +71,7 @@ Print the cell value as a number and add the OS' EOL character(s)
 "      ; Print the value 5 to the STDOUT with OS' EOL character(s)
 ```
 
-### Print Number Without EOL - \#
+#### Number Without EOL - `#`
 
 Print the cell value as a number
 
@@ -77,7 +80,7 @@ Print the cell value as a number
 #      ; Print the value 5 to the STDOUT
 ```
 
-### Print String With EOL - .
+#### String With EOL - `.`
 
 While the cell value is `0 < value < 256`, print the character that this value represents and increase the cell index. On end, print the OS' EOL
 
@@ -86,7 +89,7 @@ While the cell value is `0 < value < 256`, print the character that this value r
 .     ; Print Hello\n to the STDOUT
 ```
 
-### Print String Without EOL - ,
+#### String Without EOL - `,`
 
 While the cell value is `0 < value < 256`, print the character that this value represents and increase the cell index
 
@@ -95,7 +98,9 @@ While the cell value is `0 < value < 256`, print the character that this value r
 ,     ; Print Hello to the STDOUT
 ```
 
-### Input Number - $
+### Input
+
+#### Number - `$`
 
 Read the STDIN as a number to the cell
 
@@ -103,7 +108,7 @@ Read the STDIN as a number to the cell
 $     ; Ask for user input and conver it to a number into cell 0
 ```
 
-### Input String With Size - ?
+#### String With Size - `?`
 
 Read the STDIN as string (trimmed, no EOL character(s)), store its size to the current cell and the string to the subsequent cells the same way `\` does
 
@@ -116,7 +121,7 @@ Read the STDIN as string (trimmed, no EOL character(s)), store its size to the c
 ; Cell N + 1: 0
 ```
 
-### Input String Without Size - _
+#### String Without Size - `_`
 
 Read the STDIN as string (trimmed, no EOL character(s)), store the string the same way `\` does
 
@@ -128,7 +133,9 @@ _           ; Read user input from STDIN as string
 ; Cell N:     0
 ```
 
-### Sum - +
+### Operations
+
+#### Sum - `+`
 
 Add the specified value to the current cell
 
@@ -143,7 +150,7 @@ Add the specified value to the current cell
        ; Cell 0 is now 6
 ```
 
-### Subtraction - -
+#### Subtraction - `-`
 
 Subtract the specified value from the current cell
 
@@ -158,7 +165,7 @@ Subtract the specified value from the current cell
        ; Cell 0 is now 3
 ```
 
-### Multiplication - *
+#### Multiplication - `*`
 
 Multiplies the current cell by the specified value
 
@@ -174,7 +181,7 @@ Multiplies the current cell by the specified value
        ; Cell 0 is now -90000
 ```
 
-### Division - /
+#### Division - `/`
 
 Divides the current cell by the specified value (unless it is 0)
 
