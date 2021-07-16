@@ -13,6 +13,7 @@ It is not based in a stack concept, but in cells instead. Cells are like numeric
 - Only one command is allowed per line 
 - There are no limits for the quantity of cells, only your RAM/OS
   - If a cell without an assigned value is read, then it returns the value 0
+- Empty line terminates the program
 
 ## Commands
 
@@ -125,4 +126,129 @@ _           ; Read user input from STDIN as string
 ; ...
 ; Cell N - 1: code of the last character in the string
 ; Cell N:     0
+```
+
+### Sum - +
+
+Add the specified value to the current cell
+
+```
+`5     ; Make the cell 0 be filled with value 5
++3     ; Add 3 to the cell 0, that now is 8
+ `7    ; Make the cell 1 be filled with value 7
++@1    ; Add cell 1 to the cell 0, that now is 15
+  `9   ; Make the cell 2 be filled with value 9
++-@2   ; Add the inverse value of the cell 2
+       ; Cell 2: 9, inverse: -9
+       ; Cell 0 is now 6
+```
+
+### Subtraction - -
+
+Subtract the specified value from the current cell
+
+```
+`5     ; Make the cell 0 be filled with value 5
+-3     ; Subtract 3 from the cell 0, that now is 2
+--@0   ; Subtract the inverse of cell 0 from cell 0
+       ; Cell 0: 2, inverse: -2
+       ; Cell 0 is now 4
+ `1    ; Make the cell 1 be filled with value 1
+-@1    ; Subtract the value of cell 1 from cell 0
+       ; Cell 0 is now 3
+```
+
+### Multiplication - *
+
+Multiplies the current cell by the specified value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+*2     ; Multiply cell 0 by 2, that now is 10
+*@0    ; Multiply the cell 0 by the value of cell 0
+       ; Cell 0 is now 100
+*-3    ; Cell 0 is now -300
+*-1    ; Cell 0 is now 300
+*-@0   ; Multiply by the inverse of cell 0
+       ; Cell 0: 300, inverse: -300
+       ; Cell 0 is now -90000
+```
+
+### Division - /
+
+Divides the current cell by the specified value (unless it is 0)
+
+```
+`5     ; Make the cell 0 be filled with value 5
+/2     ; Divide cell 0 by 2, that now is 2.5
+ `0.5  ; Make the cell 1 be filled with value 0.5
+  `10  ; Make cell 2 be filled with value 10
+  /@1  ; Divide cell 2 by value of cell 1
+       ; Cell 2: 20
+  /-@1 ; Divide cell 2 by the inverse of cell 1
+       ; Cell 1: 0.5, inverse -0.5
+       ; Cell 2 is now -40
+```
+
+## References
+
+Any command that accepts a numeric argument can use cell references, prefixing the cell number with an `@`
+
+### Non-branch Commands
+
+#### @N
+
+Return the value of cell N
+
+```
+`5     ; Make the cell 0 be filled with value 5
+ `3    ; Make the cell 1 be filled with value 3
+ +@0   ; Sum the value of cell 0 into cell 1, that is now 8
+```
+
+#### -@N
+
+Return the value of cell N multiplied by -1
+
+```
+`5     ; Make the cell 0 be filled with value 5
+ `3    ; Make the cell 1 be filled with value 3
+ +-@0  ; Sum the inverse value of cell 0 into cell 1
+       ; Cell 0: 5, inverse: -5
+       ; Cell 1: -2
+```
+### Branch Commands
+
+#### @N
+
+Return the value of cell N as the target line
+
+```
+`5     ; Make the cell 0 be filled with value 5
+:@0    ; Unconditional jump to line specified by cell 0 value
+       ; Go to line 5
+```
+
+#### +@N
+
+Add the value of cell N to the current line number
+
+```
+`5     ; Make the cell 0 be filled with value 5
+:+@0   ; Unconditional jump to current line index + the cell 0 value
+       ; Go to line 7
+```
+
+#### -@N
+
+Subtract the value of cell N from the current line number
+
+```
+:5    ; Go to line 5
+`3
+"
+
+`4     ; Make the cell 0 be filled with value 4
+:-@0   ; Unconditional jump to current line index - the cell 0 value
+       ; Go to line 2
 ```
