@@ -10,6 +10,7 @@ The language was built on top of JavaScript, so some JavaScript traits are built
 
 It is not based in a stack concept, but in cells instead. Cells are like numeric variables and you choose which cell you are using by the quantity of spaces a line has before the command (hence it looks like a staircase)
 
+- Commands are a single printable character that is not a letter or a number
 - Only one command is allowed per line
 - Commands have a maximum of one argument
 - There are no limits for the quantity of cells, only your RAM/OS
@@ -252,6 +253,233 @@ Divides the current cell by the specified value (unless it is 0, when it will th
   %-@1 ; Divide cell 2 by the inverse of cell 1 and return the remainder
        ; Cell 1: 4, inverse -4
        ; Cell 2 is now 2
+```
+
+#### Bitwise AND - `&`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Apply the bitwise AND operator between the current cell value and the argument value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+&3     ; Bitwise AND between cell 0 and 3
+       ; Cell 0: 1
+ `5    ; Make the cell 1 be filled with value 5
+ &-2   ; Bitwise AND between cell 1 and -2
+       ; Cell 1: 4
+```
+
+#### Bitwise OR - `|`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Apply the bitwise OR operator between the current cell value and the argument value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+|3     ; Bitwise OR between cell 0 and 3
+       ; Cell 0: 7
+ `5    ; Make the cell 1 be filled with value 5
+ |-2   ; Bitwise OR between cell 1 and -2
+       ; Cell 1: -1
+```
+
+#### Bitwise XOR - `^`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Apply the bitwise XOR operator between the current cell value and the argument value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+^3     ; Bitwise XOR between cell 0 and 3
+       ; Cell 0: 6
+ `5    ; Make the cell 1 be filled with value 5
+ ^-4   ; Bitwise XOR between cell 1 and -4
+       ; Cell 1: -7
+```
+
+#### Bitwise NOT - `~`
+
+Argument: [no arguments](#no-arguments)
+
+Apply the bitwise NOT operator to the current cell value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+~      ; Bitwise NOT the cell 0 value
+       ; Cell 0: -6
+ `-10  ; Make the cell 1 be filled with value -10
+ ~     ; Bitwise NOT the cell 1 value
+       ; Cell 1: 9
+```
+
+#### <a id="bitwise-shift-left"></a>Bitwise Shift Left - `{`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Apply the bitwise SHIFT LEFT operator to the current cell value by the argument value
+
+If the argument value is negative, then bitwise [SHIFT RIGHT](#bitwise-shift-right) will be applied to the absolut value of the argument value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+{2     ; Bitwise SHIFT LEFT the cell 0 value by 2
+       ; Cell 0: 20
+ `5    ; Make the cell 1 be filled with value 5
+ {-2   ; Bitwise SHIFT RIGHT cell 1 value by 2
+       ; Cell 1: 1
+```
+
+#### <a id="bitwise-shift-right"></a>Bitwise Shift Right - `}`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Apply the bitwise SHIFT RIGHT operator to the current cell value by the argument value
+
+If the argument value is negative, then bitwise [SHIFT LEFT](#bitwise-shift-left) will be applied to the absolut value of the argument value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+}2     ; Bitwise SHIFT RIGHT the cell 0 value by 2
+       ; Cell 0: 1
+ `5    ; Make the cell 1 be filled with value 5
+ }-2   ; Bitwise SHIFT LEFT cell 1 value by 2
+       ; Cell 1: 20
+```
+
+### Branches
+
+Argument: [line number](#line-number-argument)
+
+Change the code execution flow based on decisions
+
+#### <a id="branch-unconditional"></a>Unconditional - `:`
+
+Jump to the specified line without checking any condition
+
+```
+:5     ; Jump to line 5
+:+2    ; Jump to line 4
+`3     ; Make the cell 0 be filled with value 3
+:@0    ; Jump to line 3
+```
+
+#### Equal - `=`
+
+If the current cell value is `0`, jump to the specified line
+
+```
+=5     ; Jump to line 5
+`1     ; Make the cell 0 be filled with value 1
+ `10   ; Make the cell 1 be filled with value 10
+=@1    ; Do not jump to line 10, cell 0 has value 1
+```
+
+#### Different - `!`
+
+If the current cell value is different than `0`, jump to the specified line
+
+```
+`1     ; Make the cell 0 be filled with value 1
+!5     ; Jump to line 5
+ !3    ; Do not jump to line 3, cell 1 has value 0
+ `10   ; Make the cell 1 be filled with value 10
+!@1    ; Jump to line 10
+```
+
+#### Less - `<`
+
+If the current cell value is less than `0`, jump to the specified line
+
+```
+`-1    ; Make the cell 0 be filled with value -1
+<5     ; Jump to line 5
+ !3    ; Do not jump to line 3, cell 1 has value 0
+ `10   ; Make the cell 1 be filled with value 10
+<@1    ; Jump to line 10
+```
+
+#### Greater - `>`
+
+If the current cell value is greater than `0`, jump to the specified line
+
+```
+`1     ; Make the cell 0 be filled with value 1
+>5     ; Jump to line 5
+ !3    ; Do not jump to line 3, cell 1 has value 0
+ `10   ; Make the cell 1 be filled with value 10
+>@1    ; Jump to line 10
+```
+
+### Random - `'`
+
+Argument: [no argument](#no-arguments)
+
+Place a random number between `0` (inclusive) and `1` (not inclusive) into the current cell
+
+```
+'     ; Make the cell 0 be filled with a value between [0, 1)
+```
+
+### Truncate - `(`
+
+Argument: [no argument](#no-arguments)
+
+Truncate the current cell value to its integer value
+
+```
+`3.14 ; Make the cell 0 be filled with value 3.14
+(     ; Truncate the cell 0 value to 3
+```
+
+### Round - `)`
+
+Argument: [no argument](#no-arguments)
+
+Round the number to the nearest integer, regardless of its signal
+
+```
+`3.14 ; Make the cell 0 be filled with value 3.14
+)     ; Round the cell 0 value to 3
+`3.75 ; Make the cell 0 be filled with value 3.75
+)     ; Round the cell 0 value to 4
+`-2.1 ; Make the cell 0 be filled with value -2.1
+)     ; Round the cell 0 value to -2
+`-2.6 ; Make the cell 0 be filled with value -2.6
+)     ; Round the cell 0 value to -3
+```
+
+### Subroutines
+
+Subroutine [calls](#subroutine-call) are like [unconditional jumps](#branch-unconditional), but retain the next line of the source code (starting in 1, as humans read) inside the current cell to be able to [return](#subroutine-return) at some point
+
+#### <a id="subroutine-call"></a>Call - `[`
+
+Argument: [line number](#line-number-argument)
+
+Save the next line of source code (starting in 1, as humans read) inside the current cell, then undonditionally jump to the specified line number in the argument
+
+```
+[5     ; Make the cell 0 be filled with value 2
+       ; Jump to line 5
+```
+
+#### <a id="subroutine-return"></a>Return - `]`
+
+Argument: [no argument](#no-arguments)
+
+Unconditionally jump to the source code line stored in the current cell value
+
+```
+[5     ; Make the cell 0 be filled with with 2
+       ; Jump to line 5
+       ; Line 3
+       ; Line 4
+ `3    ; Make the cell 1 be filled with value 3
+ "     ; Print the value 3 to the STDOUT with OS' EOL character(s)
+]      ; Jump to line 2
 ```
 
 ## Arguments
