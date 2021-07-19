@@ -10,12 +10,18 @@ The language was built on top of JavaScript, so some JavaScript traits are built
 
 It is not based in a stack concept, but in cells instead. Cells are like numeric variables and you choose which cell you are using by the quantity of spaces a line has before the command (hence it looks like a staircase)
 
-- Only one command is allowed per line 
+- Only one command is allowed per line
+- Commands have a maximum of one argument
 - There are no limits for the quantity of cells, only your RAM/OS
   - If a cell without an assigned value is read, then it returns the value 0
-- Empty line terminates the program
 
 ## Commands
+
+Commands can have [no arguments](#no-arguments), [string argument](#string-argument), [numeric argument with reference](#numeric-argument-with-reference), [numeric argument without reference](#numeric-argument-without-reference) or [line number argument](#line-number-argument)
+
+### Empty line
+
+End the program
 
 ### Comments - `;`
 
@@ -29,14 +35,19 @@ Everything after a `;` is a comment, unless in the String Literal command, where
 ### Literals
 
 #### Numbers - `` ` ``
+
+Argument: [numeric without reference](#numeric-argument-without-reference)
+
 Put a number into a cell
 
 ```
-`5     ; Make the cell 0 hold the value 5
- `3    ; Make the cell 1 hold the value 3
+`5     ; Make the cell 0 be filled with value 5
+ `3    ; Make the cell 1 be filled with value 3
 ```
 
 #### Strings - `\`
+
+Argument: [string](#string-argument)
 
 Put the byte of each character of a string into the cells, plus an additional cell that will hold the 0 value
 
@@ -53,6 +64,8 @@ Put the byte of each character of a string into the cells, plus an additional ce
 
 ### Copy Cell - `@`
 
+Argument: [numeric without reference](#numeric-argument-without-reference)
+
 Copy the content of a cell
 
 ```
@@ -64,6 +77,8 @@ Copy the content of a cell
 
 #### Number With EOL - `"`
 
+Argument: [no arguments](#no-arguments)
+
 Print the cell value as a number and add the OS' EOL character(s)
 
 ```
@@ -72,6 +87,8 @@ Print the cell value as a number and add the OS' EOL character(s)
 ```
 
 #### Number Without EOL - `#`
+
+Argument: [no arguments](#no-arguments)
 
 Print the cell value as a number
 
@@ -82,6 +99,8 @@ Print the cell value as a number
 
 #### String With EOL - `.`
 
+Argument: [no arguments](#no-arguments)
+
 While the cell value is `0 < value < 256`, print the character that this value represents and increase the cell index. On end, print the OS' EOL
 
 ```
@@ -90,6 +109,8 @@ While the cell value is `0 < value < 256`, print the character that this value r
 ```
 
 #### String Without EOL - `,`
+
+Argument: [no arguments](#no-arguments)
 
 While the cell value is `0 < value < 256`, print the character that this value represents and increase the cell index
 
@@ -102,6 +123,8 @@ While the cell value is `0 < value < 256`, print the character that this value r
 
 #### Number - `$`
 
+Argument: [no arguments](#no-arguments)
+
 Read the STDIN as a number to the cell
 
 ```
@@ -109,6 +132,8 @@ $     ; Ask for user input and conver it to a number into cell 0
 ```
 
 #### String With Size - `?`
+
+Argument: [no arguments](#no-arguments)
 
 Read the STDIN as string (trimmed, no EOL character(s)), store its size to the current cell and the string to the subsequent cells the same way `\` does
 
@@ -123,6 +148,8 @@ Read the STDIN as string (trimmed, no EOL character(s)), store its size to the c
 
 #### String Without Size - `_`
 
+Argument: [no arguments](#no-arguments)
+
 Read the STDIN as string (trimmed, no EOL character(s)), store the string the same way `\` does
 
 ```
@@ -135,7 +162,11 @@ _           ; Read user input from STDIN as string
 
 ### Operations
 
+Arithmetic and bitwise operations
+
 #### Sum - `+`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
 
 Add the specified value to the current cell
 
@@ -152,6 +183,8 @@ Add the specified value to the current cell
 
 #### Subtraction - `-`
 
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
 Subtract the specified value from the current cell
 
 ```
@@ -166,6 +199,8 @@ Subtract the specified value from the current cell
 ```
 
 #### Multiplication - `*`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
 
 Multiplies the current cell by the specified value
 
@@ -183,7 +218,9 @@ Multiplies the current cell by the specified value
 
 #### Division - `/`
 
-Divides the current cell by the specified value (unless it is 0)
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Divides the current cell by the specified value (unless it is 0, when it will throw an exception)
 
 ```
 `5     ; Make the cell 0 be filled with value 5
@@ -197,6 +234,163 @@ Divides the current cell by the specified value (unless it is 0)
        ; Cell 2 is now -40
 ```
 
+#### Modulo - `%`
+
+Argument: [numeric with reference](#numeric-argument-with-reference)
+
+Divides the current cell by the specified value (unless it is 0, when it will throw an exception) and return the remainder of the division
+
+```
+`5     ; Make the cell 0 be filled with value 5
+%2     ; Divide cell 0 by 2 and return the remainder
+       ; Cell 0: 1
+ `4    ; Make the cell 1 be filled with value 4
+  `10  ; Make cell 2 be filled with value 10
+  %@1  ; Divide cell 2 by value of cell 1 and return the remainder
+       ; Cell 2: 2
+  `10  ; Make cell 2 be filled with value 10
+  %-@1 ; Divide cell 2 by the inverse of cell 1 and return the remainder
+       ; Cell 1: 4, inverse -4
+       ; Cell 2 is now 2
+```
+
+## Arguments
+
+The commands can take [no arguments](#no-arguments), [numeric argument with reference](#numeric-argument-with-reference), [numeric argument without reference](#numeric-argument-without-reference) or [line number argument](#line-number-argument)
+
+### No arguments
+
+Anything that comes after a command that doesn't require argument will throw an exception. Comments are the only thing allowed after these commands
+
+#### Good
+
+```
+"
+"; Comment
+"     ; Comment
+```
+
+#### Bad
+
+```
+""
+"5
+"@0
+```
+
+### String Argument
+
+Anything that comes after a command that requires a string argument will be handled as part of the string. Comments are not allowed in these commands (they will become part of the string)
+
+#### Good
+
+```
+\I am a string
+\I am also a string ; And this comment too is part of the string
+```
+
+#### Bad
+
+None
+
+### Numeric Argument With Reference
+
+Anything that comes after a command that requires a numeric argument will be converted to a number. Comments are allowed
+
+It can be an integer, a float or a [reference](#references)
+
+#### Good
+
+```
+`5
+`3     ; Three
+`3.14  ; PI
+`@0    ; Value of cell 0
+`-@0   ; Inverse value of cell 0
+```
+
+#### Bad
+
+```
+`
+`Five
+``
+```
+
+### Numeric Argument Without Reference
+
+Anything that comes after a command that requires a numeric argument will be converted to a number. Comments are allowed
+
+It can be an integer or a float
+
+#### Good
+
+```
+`5
+`3     ; Three
+`3.14  ; PI
+```
+
+#### Bad
+
+```
+`
+`Five
+``
+`@0
+`-@0
+```
+
+### Line Number Argument
+
+Anything that comes after a command that requires a line number argument will be converted to a line number. Comments are allowed
+
+#### Literal Line Number
+
+It can be an integer, starting from 1, as humans read
+
+```
+:5     ; Jump to line 5
+```
+
+#### Relative Line Number
+
+If the argument starts with `+` or `-`, it will be handled as relative
+
+So, if the command is on line `10` and the argument is `+5`, it will result in line `15`
+
+And, if the command is on line `20` and the argument is `-10`, it will result in line `10`
+
+```
+:+4    ; Jump to line 5
+`5     ; Make the cell 0 be filled with value 5
+"      ; Print the value 5 to STDOUT and exit on line below
+
+:-3    ; Jump to line 2
+```
+
+#### Reference Line Number
+
+If the argument starts with an `@`, it will be handled as the specified cell value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+ :@0   ; Jump to line 5
+```
+
+#### Relative Reference Line Number
+
+If the arguments starts with `+@` or `-@`, it will be handled as the specified cell value relative to the current line number
+
+For simplicity `-@` will subtract the specified cell value from the current line number, instead of returning the inverse of the cell value
+
+```
+`5     ; Make the cell 0 be filled with value 5
+ `-1   ; Make the cell 1 be filled with value -1
+:+@0   ; Jump to line 8
+:-@1   ; Jump to line 5, not line 1
+```
+
 ## References
 
 Any command that accepts a numeric argument can use cell references, prefixing the cell number with an `@`
@@ -205,7 +399,7 @@ Any command that accepts a numeric argument can use cell references, prefixing t
 
 #### @N
 
-Return the value of cell N
+Return the value of cell `N`
 
 ```
 `5     ; Make the cell 0 be filled with value 5
@@ -215,7 +409,7 @@ Return the value of cell N
 
 #### -@N
 
-Return the value of cell N multiplied by -1
+Return the value of cell `N` multiplied by -1
 
 ```
 `5     ; Make the cell 0 be filled with value 5
@@ -228,7 +422,7 @@ Return the value of cell N multiplied by -1
 
 #### @N
 
-Return the value of cell N as the target line
+Return the value of cell `N` as the target line
 
 ```
 `5     ; Make the cell 0 be filled with value 5
@@ -238,7 +432,7 @@ Return the value of cell N as the target line
 
 #### +@N
 
-Add the value of cell N to the current line number
+Add the value of cell `N` to the current line number
 
 ```
 `5     ; Make the cell 0 be filled with value 5
@@ -248,7 +442,7 @@ Add the value of cell N to the current line number
 
 #### -@N
 
-Subtract the value of cell N from the current line number
+Subtract the value of cell `N` from the current line number, instead of return the inverse of cell `N`
 
 ```
 :5    ; Go to line 5
