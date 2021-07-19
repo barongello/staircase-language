@@ -681,3 +681,10 @@ Subtract the value of cell `N` from the current line number, instead of return t
 :-@0   ; Unconditional jump to current line index - the cell 0 value
        ; Go to line 2
 ```
+
+## To Do
+
+- Make it be possible to run inside browsers
+  - Change inputs to be prompt
+  - Change outputs to be console.log
+    - This will lose the print without EOL versions
