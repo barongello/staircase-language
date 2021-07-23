@@ -65,7 +65,7 @@ Put the byte of each character of a string into the cells, plus an additional ce
 
 ### Copy Cell - `@`
 
-Argument: [numeric without reference](#numeric-argument-without-reference)
+Argument: positive integer (including zero)
 
 Copy the content of a cell
 
