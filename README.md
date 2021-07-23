@@ -486,7 +486,7 @@ Unconditionally jump to the source code line stored in the current cell value
 
 The commands can take [no arguments](#no-arguments), [numeric argument with reference](#numeric-argument-with-reference), [numeric argument without reference](#numeric-argument-without-reference) or [line number argument](#line-number-argument)
 
-### No arguments
+### No Arguments
 
 Anything that comes after a command that doesn't require argument will throw an exception. Comments are the only thing allowed after these commands
 
