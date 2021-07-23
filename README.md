@@ -2,7 +2,7 @@
 
 Esoteric programming language created recreationally to just add one more weird language to [Esolangs](https://esolangs.org) and learn a little bit about creating NPM packages and publishing them
 
-While it probably has no useful usage, it is fun to code in and somehow train your brain to code in unusual ways (pretty much like [Brainf*ck](https://esolangs.org/wiki/Brainfuck))
+While it probably has no useful usage, it is fun to code in and somehow train your brain to code in unusual ways (pretty much like [Brainfuck](https://esolangs.org/wiki/Brainfuck))
 
 The language was built on top of JavaScript, so some JavaScript traits are built in (like: 5 % -2 = 1 instead of -1)
 
@@ -26,7 +26,7 @@ End the program
 
 ### Comments - `;`
 
-Everything after a `;` is a comment, unless in the String Literal command, where `;`will be handled as part of the text
+Everything after a `;` is a comment, unless in the String Literal command, where `;` will be handled as part of the text
 
 ```
 ; I am a comment
@@ -321,7 +321,7 @@ Argument: [numeric with reference](#numeric-argument-with-reference)
 
 Apply the bitwise SHIFT LEFT operator to the current cell value by the argument value
 
-If the argument value is negative, then bitwise [SHIFT RIGHT](#bitwise-shift-right) will be applied to the absolut value of the argument value
+If the argument value is negative, then bitwise [SHIFT RIGHT](#bitwise-shift-right) will be applied to the absolute value of the argument value
 
 ```
 `5     ; Make the cell 0 be filled with value 5
@@ -338,7 +338,7 @@ Argument: [numeric with reference](#numeric-argument-with-reference)
 
 Apply the bitwise SHIFT RIGHT operator to the current cell value by the argument value
 
-If the argument value is negative, then bitwise [SHIFT LEFT](#bitwise-shift-left) will be applied to the absolut value of the argument value
+If the argument value is negative, then bitwise [SHIFT LEFT](#bitwise-shift-left) will be applied to the absolute value of the argument value
 
 ```
 `5     ; Make the cell 0 be filled with value 5
